@@ -16,17 +16,11 @@ public final class DamageOverlayPalette {
 	public static final int BLAST_HURT_ROW = 5;
 	public static final int WATER_HURT_ROW = 6;
 	public static final int VOID_HURT_ROW = 7;
-
-	private static final int[] HURT_ROW_COLORS = {
-		argb(255, 112, 20),
-		argb(75, 210, 255),
-		argb(80, 220, 60),
-		argb(255, 0, 0),
-		argb(185, 80, 255),
-		argb(255, 213, 64),
-		argb(60, 120, 255),
-		argb(45, 0, 90)
-	};
+	public static final int WITHER_HURT_ROW = 8;
+	public static final int SHOCK_HURT_ROW = 9;
+	public static final int STARVATION_HURT_ROW = 11;
+	public static final int ENDER_HURT_ROW = 12;
+	public static final int SUFFOCATION_HURT_ROW = 13;
 
 	private DamageOverlayPalette() {
 	}
@@ -64,6 +58,22 @@ public final class DamageOverlayPalette {
 			return WATER_HURT_ROW;
 		}
 
+		if (containsAny(damageTypePath, "lightning", "shock")) {
+			return SHOCK_HURT_ROW;
+		}
+
+		if (containsAny(damageTypePath, "starve", "starvation")) {
+			return STARVATION_HURT_ROW;
+		}
+
+		if (containsAny(damageTypePath, "ender_pearl")) {
+			return ENDER_HURT_ROW;
+		}
+
+		if (containsAny(damageTypePath, "in_wall", "suffocation", "suffocate")) {
+			return SUFFOCATION_HURT_ROW;
+		}
+
 		if (containsAny(damageTypePath, "explosion", "fireworks")) {
 			return BLAST_HURT_ROW;
 		}
@@ -72,7 +82,11 @@ public final class DamageOverlayPalette {
 			return VOID_HURT_ROW;
 		}
 
-		if (containsAny(damageTypePath, "magic", "wither", "dragon_breath", "sonic_boom", "thorns")) {
+		if (containsAny(damageTypePath, "wither")) {
+			return WITHER_HURT_ROW;
+		}
+
+		if (containsAny(damageTypePath, "magic", "dragon_breath", "sonic_boom", "thorns")) {
 			return ARCANE_HURT_ROW;
 		}
 
@@ -93,7 +107,4 @@ public final class DamageOverlayPalette {
 		return false;
 	}
 
-	private static int argb(int red, int green, int blue) {
-		return (VANILLA_HURT_OVERLAY_ALPHA << 24) | (red << 16) | (green << 8) | blue;
-	}
 }

@@ -15,7 +15,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(OverlayTexture.class)
 public class OverlayTextureMixin {
 	private static final int OVERLAY_TEXTURE_SIZE = 16;
-	private static final int HURT_OVERLAY_ROW_COUNT = 8;
+	private static final int[] CUSTOM_HURT_OVERLAY_ROWS = {
+		DamageOverlayPalette.FIRE_HURT_ROW,
+		DamageOverlayPalette.FROST_HURT_ROW,
+		DamageOverlayPalette.TOXIC_HURT_ROW,
+		DamageOverlayPalette.VANILLA_HURT_ROW,
+		DamageOverlayPalette.ARCANE_HURT_ROW,
+		DamageOverlayPalette.BLAST_HURT_ROW,
+		DamageOverlayPalette.WATER_HURT_ROW,
+		DamageOverlayPalette.VOID_HURT_ROW,
+		DamageOverlayPalette.WITHER_HURT_ROW,
+		DamageOverlayPalette.SHOCK_HURT_ROW,
+		DamageOverlayPalette.STARVATION_HURT_ROW,
+		DamageOverlayPalette.ENDER_HURT_ROW,
+		DamageOverlayPalette.SUFFOCATION_HURT_ROW
+	};
 
 	@Shadow
 	@Final
@@ -29,7 +43,7 @@ public class OverlayTextureMixin {
 			return;
 		}
 
-		for (int hurtOverlayRow = 0; hurtOverlayRow < HURT_OVERLAY_ROW_COUNT; hurtOverlayRow++) {
+		for (int hurtOverlayRow : CUSTOM_HURT_OVERLAY_ROWS) {
 			int rowColor = DamageOverlayPalette.colorForOverlayRow(hurtOverlayRow);
 			for (int overlayColumn = 0; overlayColumn < OVERLAY_TEXTURE_SIZE; overlayColumn++) {
 				pixels.setPixel(overlayColumn, hurtOverlayRow, rowColor);

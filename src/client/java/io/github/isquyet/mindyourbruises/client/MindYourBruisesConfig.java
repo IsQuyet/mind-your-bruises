@@ -21,6 +21,7 @@ public class MindYourBruisesConfig {
 	private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("mind-your-bruises.json");
 	private static final long MAX_CONFIG_SIZE_BYTES = 16384L;
 	private static final boolean DEFAULT_ENABLED = true;
+	private static final boolean DEFAULT_USE_STATUS_EFFECT_HINTS = true;
 
 	private static final String DEFAULT_FIRE_COLOR = "#ff7014";
 	private static final String DEFAULT_FROST_COLOR = "#4bd2ff";
@@ -30,10 +31,16 @@ public class MindYourBruisesConfig {
 	private static final String DEFAULT_BLAST_COLOR = "#ffd540";
 	private static final String DEFAULT_WATER_COLOR = "#3c78ff";
 	private static final String DEFAULT_VOID_COLOR = "#2d005a";
+	private static final String DEFAULT_WITHER_COLOR = "#d6d6c8";
+	private static final String DEFAULT_SHOCK_COLOR = "#d8f6ff";
+	private static final String DEFAULT_STARVATION_COLOR = "#9a7a32";
+	private static final String DEFAULT_ENDER_COLOR = "#2bd6b3";
+	private static final String DEFAULT_SUFFOCATION_COLOR = "#777f86";
 
 	private static MindYourBruisesConfig instance = new MindYourBruisesConfig();
 
 	private Boolean enabled = DEFAULT_ENABLED;
+	private Boolean useStatusEffectHints = DEFAULT_USE_STATUS_EFFECT_HINTS;
 	private String fireColor = DEFAULT_FIRE_COLOR;
 	private String frostColor = DEFAULT_FROST_COLOR;
 	private String toxicColor = DEFAULT_TOXIC_COLOR;
@@ -42,6 +49,11 @@ public class MindYourBruisesConfig {
 	private String blastColor = DEFAULT_BLAST_COLOR;
 	private String waterColor = DEFAULT_WATER_COLOR;
 	private String voidColor = DEFAULT_VOID_COLOR;
+	private String witherColor = DEFAULT_WITHER_COLOR;
+	private String shockColor = DEFAULT_SHOCK_COLOR;
+	private String starvationColor = DEFAULT_STARVATION_COLOR;
+	private String enderColor = DEFAULT_ENDER_COLOR;
+	private String suffocationColor = DEFAULT_SUFFOCATION_COLOR;
 	private Map<String, String> damageTypeOverrides = defaultDamageTypeOverrides();
 
 	public static MindYourBruisesConfig get() {
@@ -129,6 +141,10 @@ public class MindYourBruisesConfig {
 		return enabled == null ? DEFAULT_ENABLED : enabled;
 	}
 
+	public boolean useStatusEffectHints() {
+		return useStatusEffectHints == null ? DEFAULT_USE_STATUS_EFFECT_HINTS : useStatusEffectHints;
+	}
+
 	public int colorForOverlayRow(int overlayRow) {
 		if (!enabled()) {
 			return parseRgbColor(DEFAULT_FALLBACK_COLOR, DEFAULT_FALLBACK_COLOR);
@@ -142,6 +158,11 @@ public class MindYourBruisesConfig {
 			case DamageOverlayPalette.BLAST_HURT_ROW -> parseRgbColor(blastColor, DEFAULT_BLAST_COLOR);
 			case DamageOverlayPalette.WATER_HURT_ROW -> parseRgbColor(waterColor, DEFAULT_WATER_COLOR);
 			case DamageOverlayPalette.VOID_HURT_ROW -> parseRgbColor(voidColor, DEFAULT_VOID_COLOR);
+			case DamageOverlayPalette.WITHER_HURT_ROW -> parseRgbColor(witherColor, DEFAULT_WITHER_COLOR);
+			case DamageOverlayPalette.SHOCK_HURT_ROW -> parseRgbColor(shockColor, DEFAULT_SHOCK_COLOR);
+			case DamageOverlayPalette.STARVATION_HURT_ROW -> parseRgbColor(starvationColor, DEFAULT_STARVATION_COLOR);
+			case DamageOverlayPalette.ENDER_HURT_ROW -> parseRgbColor(enderColor, DEFAULT_ENDER_COLOR);
+			case DamageOverlayPalette.SUFFOCATION_HURT_ROW -> parseRgbColor(suffocationColor, DEFAULT_SUFFOCATION_COLOR);
 			default -> parseRgbColor(fallbackColor, DEFAULT_FALLBACK_COLOR);
 		};
 	}
@@ -163,6 +184,11 @@ public class MindYourBruisesConfig {
 		boolean configChanged = false;
 		if (enabled == null) {
 			enabled = DEFAULT_ENABLED;
+			configChanged = true;
+		}
+
+		if (useStatusEffectHints == null) {
+			useStatusEffectHints = DEFAULT_USE_STATUS_EFFECT_HINTS;
 			configChanged = true;
 		}
 
@@ -197,6 +223,26 @@ public class MindYourBruisesConfig {
 		ColorNormalization voidColorNormalization = normalizeColor(voidColor, DEFAULT_VOID_COLOR);
 		voidColor = voidColorNormalization.color();
 		configChanged |= voidColorNormalization.changed();
+
+		ColorNormalization witherColorNormalization = normalizeColor(witherColor, DEFAULT_WITHER_COLOR);
+		witherColor = witherColorNormalization.color();
+		configChanged |= witherColorNormalization.changed();
+
+		ColorNormalization shockColorNormalization = normalizeColor(shockColor, DEFAULT_SHOCK_COLOR);
+		shockColor = shockColorNormalization.color();
+		configChanged |= shockColorNormalization.changed();
+
+		ColorNormalization starvationColorNormalization = normalizeColor(starvationColor, DEFAULT_STARVATION_COLOR);
+		starvationColor = starvationColorNormalization.color();
+		configChanged |= starvationColorNormalization.changed();
+
+		ColorNormalization enderColorNormalization = normalizeColor(enderColor, DEFAULT_ENDER_COLOR);
+		enderColor = enderColorNormalization.color();
+		configChanged |= enderColorNormalization.changed();
+
+		ColorNormalization suffocationColorNormalization = normalizeColor(suffocationColor, DEFAULT_SUFFOCATION_COLOR);
+		suffocationColor = suffocationColorNormalization.color();
+		configChanged |= suffocationColorNormalization.changed();
 
 		Map<String, String> normalizedOverrides = normalizeDamageTypeOverrides(damageTypeOverrides);
 		if (!normalizedOverrides.equals(damageTypeOverrides)) {
@@ -261,6 +307,11 @@ public class MindYourBruisesConfig {
 			case "blast" -> DamageOverlayPalette.BLAST_HURT_ROW;
 			case "water" -> DamageOverlayPalette.WATER_HURT_ROW;
 			case "void" -> DamageOverlayPalette.VOID_HURT_ROW;
+			case "wither" -> DamageOverlayPalette.WITHER_HURT_ROW;
+			case "shock" -> DamageOverlayPalette.SHOCK_HURT_ROW;
+			case "starvation" -> DamageOverlayPalette.STARVATION_HURT_ROW;
+			case "ender" -> DamageOverlayPalette.ENDER_HURT_ROW;
+			case "suffocation" -> DamageOverlayPalette.SUFFOCATION_HURT_ROW;
 			default -> null;
 		};
 	}
@@ -300,7 +351,12 @@ public class MindYourBruisesConfig {
 		overrides.put("minecraft:sting", "toxic");
 		overrides.put("minecraft:magic", "arcane");
 		overrides.put("minecraft:indirect_magic", "arcane");
-		overrides.put("minecraft:wither", "arcane");
+		overrides.put("minecraft:wither", "wither");
+		overrides.put("minecraft:wither_skull", "wither");
+		overrides.put("minecraft:lightning_bolt", "shock");
+		overrides.put("minecraft:starve", "starvation");
+		overrides.put("minecraft:ender_pearl", "ender");
+		overrides.put("minecraft:in_wall", "suffocation");
 		overrides.put("minecraft:dragon_breath", "arcane");
 		overrides.put("minecraft:sonic_boom", "arcane");
 		overrides.put("minecraft:thorns", "arcane");
