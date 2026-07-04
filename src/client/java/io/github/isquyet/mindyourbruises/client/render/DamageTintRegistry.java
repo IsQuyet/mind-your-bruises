@@ -60,11 +60,15 @@ public final class DamageTintRegistry {
 		}
 
 		boolean magicDamage = "minecraft".equals(damageTypeId.getNamespace()) && "magic".equals(damageTypeId.getPath());
-		if (magicDamage && entity.hasEffect(MobEffects.WITHER)) {
+		if (!magicDamage) {
+			return storedHurtOverlayRow;
+		}
+
+		if (entity.hasEffect(MobEffects.WITHER)) {
 			return DamageOverlayPalette.WITHER_HURT_ROW;
 		}
 
-		if (magicDamage && entity.hasEffect(MobEffects.POISON)) {
+		if (entity.hasEffect(MobEffects.POISON)) {
 			return DamageOverlayPalette.TOXIC_HURT_ROW;
 		}
 

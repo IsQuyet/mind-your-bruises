@@ -43,7 +43,7 @@ Example config:
   "fallbackColor": "#ff0000",
   "arcaneColor": "#b950ff",
   "waterColor": "#3c78ff",
-  "voidColor": "#2d005a",
+  "voidColor": "#b950ff",
   "witherColor": "#d6d6c8",
   "shockColor": "#d8f6ff",
   "starvationColor": "#9a7a32",

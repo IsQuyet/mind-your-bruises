@@ -29,7 +29,7 @@ public class MindYourBruisesConfig {
 	private static final String DEFAULT_FALLBACK_COLOR = "#ff0000";
 	private static final String DEFAULT_ARCANE_COLOR = "#b950ff";
 	private static final String DEFAULT_WATER_COLOR = "#3c78ff";
-	private static final String DEFAULT_VOID_COLOR = "#2d005a";
+	private static final String DEFAULT_VOID_COLOR = "#b950ff";
 	private static final String DEFAULT_WITHER_COLOR = "#d6d6c8";
 	private static final String DEFAULT_SHOCK_COLOR = "#d8f6ff";
 	private static final String DEFAULT_STARVATION_COLOR = "#9a7a32";
