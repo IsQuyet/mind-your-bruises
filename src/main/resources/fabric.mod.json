@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "mind-your-bruises",
+	"version": "${version}",
+	"name": "Mind Your Bruises",
+	"description": "A client-side Minecraft mod that colors the entity hurt overlay based on damage type.",
+	"authors": [
+		"Quyet"
+	],
+	"contact": {
+		"homepage": "https://github.com/IsQuyet",
+		"sources": "https://github.com/IsQuyet/mind-your-bruises",
+		"issues": "https://github.com/IsQuyet/mind-your-bruises/issues"
+	},
+	"license": "CC0-1.0",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"io.github.isquyet.mindyourbruises.client.MindYourBruisesClient"
+		]
+	},
+	"mixins": [
+		{
+			"config": "mind-your-bruises.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~1.21.11",
+		"java": ">=21"
+	}
+}
