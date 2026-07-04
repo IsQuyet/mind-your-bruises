@@ -4,15 +4,14 @@
 
 Mind Your Bruises is a client-side Minecraft Fabric mod for 1.21.11 that recolors the vanilla entity hurt overlay based on the damage type that caused it.
 
-The mod keeps vanilla red as the fallback color, then uses different overlay rows for broad damage categories such as fire and explosion, frost, toxic, arcane, water, void, wither, shock, starvation, and ender pearl damage.
+The mod keeps vanilla red as the fallback color, then uses different overlay rows for broad damage categories such as fire and explosion, frost and drowning, plant, arcane/wither/void-like damage, shock, starvation, and ender pearl damage.
 
 ## Features
 
 - Recolors the vanilla entity hurt overlay on the client.
-- Uses different colors for broad damage categories such as fire and explosion, frost, toxic, arcane, water, void, wither, shock, starvation, and ender pearl damage.
+- Uses different colors for broad damage categories such as fire and explosion, frost and drowning, plant, arcane/wither/void-like damage, shock, starvation, and ender pearl damage.
 - Keeps vanilla red as the fallback color for unmatched damage types.
 - Supports JSON configuration for colors and damage type overrides.
-- Can use status effect hints so poison effect damage can appear toxic even though vanilla reports it as magic damage.
 - Supports custom damage types from mods and datapacks through `damageTypeOverrides`.
 
 ## Configuration
@@ -36,23 +35,19 @@ Example config:
 ```json
 {
   "enabled": true,
-  "useStatusEffectHints": true,
   "fireColor": "#ff7014",
   "frostColor": "#4bd2ff",
-  "toxicColor": "#50dc3c",
+  "plantColor": "#50dc3c",
   "fallbackColor": "#ff0000",
   "arcaneColor": "#b950ff",
-  "waterColor": "#3c78ff",
-  "voidColor": "#b950ff",
-  "witherColor": "#d6d6c8",
   "shockColor": "#d8f6ff",
   "starvationColor": "#9a7a32",
   "enderColor": "#2bd6b3",
   "damageTypeOverrides": {
     "minecraft:lava": "fire",
     "minecraft:freeze": "frost",
-    "minecraft:wither": "wither",
-    "minecraft:wither_skull": "wither",
+    "minecraft:wither": "arcane",
+    "minecraft:wither_skull": "arcane",
     "minecraft:lightning_bolt": "shock",
     "minecraft:starve": "starvation",
     "minecraft:ender_pearl": "ender"
@@ -65,15 +60,27 @@ Manual edits require a game restart.
 Configuration fields:
 
 - `enabled`: Turns the mod's recolored hurt overlay on or off. When set to `false`, the overlay falls back to vanilla red.
-- `useStatusEffectHints`: Allows the mod to use the entity's active status effects when the damage type is too broad. For example, vanilla poison effect ticks use `minecraft:magic`, so this option lets poisoned magic damage use the toxic color.
-- `fireColor`, `frostColor`, `toxicColor`, `fallbackColor`, `arcaneColor`, `waterColor`, `voidColor`, `witherColor`, `shockColor`, `starvationColor`, and `enderColor`: Hex RGB colors in `#rrggbb` format. Missing `#` is accepted and normalized on save.
-- `damageTypeOverrides`: Maps a damage type id to a color group. Valid color groups are `fire`, `frost`, `toxic`, `fallback`, `arcane`, `water`, `void`, `wither`, `shock`, `starvation`, and `ender`. Explosion damage uses the `fire` group by default.
+- `fireColor`, `frostColor`, `plantColor`, `fallbackColor`, `arcaneColor`, `shockColor`, `starvationColor`, and `enderColor`: Hex RGB colors in `#rrggbb` format. Missing `#` is accepted and normalized on save.
+- `damageTypeOverrides`: Maps a damage type id to a color group. Valid color groups are `fire`, `frost`, `plant`, `fallback`, `arcane`, `shock`, `starvation`, and `ender`. Explosion damage uses the `fire` group by default. Drowning damage uses the `frost` group by default. Out-of-world, outside-border, and generic-kill damage use the `arcane` group by default.
 
-For example, this makes a custom acid damage type use the toxic overlay color:
+Default color groups:
+
+| Color group | Default color | Built-in damage types |
+| --- | --- | --- |
+| `fire` | `#ff7014` | Fire, lava, hot floor, fireballs, explosions, fireworks |
+| `frost` | `#4bd2ff` | Freezing and drowning damage |
+| `plant` | `#50dc3c` | Cactus and sweet berry bush damage |
+| `arcane` | `#b950ff` | Magic, indirect magic, dragon breath, sonic boom, thorns, wither, wither skull, out of world, outside border, generic kill |
+| `shock` | `#d8f6ff` | Lightning damage |
+| `starvation` | `#9a7a32` | Starvation damage |
+| `ender` | `#2bd6b3` | Ender pearl damage |
+| `fallback` | `#ff0000` | Unmatched damage types, vanilla physical damage, bee stings, suffocation, cramming |
+
+For example, this makes a custom thorny plant damage type use the plant overlay color:
 
 ```json
 "damageTypeOverrides": {
-  "examplemod:acid": "toxic"
+  "examplemod:thorny_vine": "plant"
 }
 ```
 

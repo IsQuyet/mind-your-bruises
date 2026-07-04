@@ -4,15 +4,14 @@
 
 Mind Your Bruises（注意你的淤青）是一个 Minecraft 1.21.11 Fabric 客户端模组，会根据伤害类型修改实体模型受击时的原版受伤覆盖颜色。
 
-模组保留原版红色作为兜底颜色，并为火焰和爆炸、冰冻、毒性、魔法、水、虚空、凋零、雷电、饥饿和末影珍珠等大类伤害使用不同的受击覆盖颜色。
+模组保留原版红色作为兜底颜色，并为火焰和爆炸、冰冻和溺水、植物性、魔法/凋零/虚空类、雷电、饥饿和末影珍珠等大类伤害使用不同的受击覆盖颜色。
 
 ## 功能
 
 - 在客户端重新着色原版实体受击覆盖效果。
-- 为火焰和爆炸、冰冻、毒性、魔法、水、虚空、凋零、雷电、饥饿和末影珍珠等大类伤害使用不同颜色。
+- 为火焰和爆炸、冰冻和溺水、植物性、魔法/凋零/虚空类、雷电、饥饿和末影珍珠等大类伤害使用不同颜色。
 - 对未匹配的伤害类型保留原版红色作为兜底颜色。
 - 支持通过 JSON 配置颜色和伤害类型映射。
-- 可以根据状态效果进行辅助判断，让原版报告为魔法伤害的中毒效果显示为毒性颜色。
 - 可通过 `damageTypeOverrides` 支持来自模组或数据包的自定义伤害类型。
 
 ## 配置
@@ -36,23 +35,19 @@ run/config/mind-your-bruises.json
 ```json
 {
   "enabled": true,
-  "useStatusEffectHints": true,
   "fireColor": "#ff7014",
   "frostColor": "#4bd2ff",
-  "toxicColor": "#50dc3c",
+  "plantColor": "#50dc3c",
   "fallbackColor": "#ff0000",
   "arcaneColor": "#b950ff",
-  "waterColor": "#3c78ff",
-  "voidColor": "#b950ff",
-  "witherColor": "#d6d6c8",
   "shockColor": "#d8f6ff",
   "starvationColor": "#9a7a32",
   "enderColor": "#2bd6b3",
   "damageTypeOverrides": {
     "minecraft:lava": "fire",
     "minecraft:freeze": "frost",
-    "minecraft:wither": "wither",
-    "minecraft:wither_skull": "wither",
+    "minecraft:wither": "arcane",
+    "minecraft:wither_skull": "arcane",
     "minecraft:lightning_bolt": "shock",
     "minecraft:starve": "starvation",
     "minecraft:ender_pearl": "ender"
@@ -65,15 +60,27 @@ run/config/mind-your-bruises.json
 配置项说明：
 
 - `enabled`：是否启用重新着色后的受击覆盖。设置为 `false` 时会回到原版红色。
-- `useStatusEffectHints`：当伤害类型本身不够细时，允许模组参考实体当前的状态效果。例如原版中毒效果 tick 使用的是 `minecraft:magic`，开启后这类带中毒状态的魔法伤害会显示为毒性颜色。
-- `fireColor`、`frostColor`、`toxicColor`、`fallbackColor`、`arcaneColor`、`waterColor`、`voidColor`、`witherColor`、`shockColor`、`starvationColor` 和 `enderColor`：颜色配置，使用 `#rrggbb` 格式。漏写 `#` 也可以，模组保存配置时会自动补齐并规范化。
-- `damageTypeOverrides`：把某个伤害类型 id 映射到一个颜色组。可用颜色组为 `fire`、`frost`、`toxic`、`fallback`、`arcane`、`water`、`void`、`wither`、`shock`、`starvation` 和 `ender`。爆炸伤害默认使用 `fire` 颜色组。
+- `fireColor`、`frostColor`、`plantColor`、`fallbackColor`、`arcaneColor`、`shockColor`、`starvationColor` 和 `enderColor`：颜色配置，使用 `#rrggbb` 格式。漏写 `#` 也可以，模组保存配置时会自动补齐并规范化。
+- `damageTypeOverrides`：把某个伤害类型 id 映射到一个颜色组。可用颜色组为 `fire`、`frost`、`plant`、`fallback`、`arcane`、`shock`、`starvation` 和 `ender`。爆炸伤害默认使用 `fire` 颜色组；溺水伤害默认使用 `frost` 颜色组；虚空、世界边界和强制击杀默认使用 `arcane` 颜色组。
 
-例如，让某个自定义酸液伤害使用毒性颜色：
+默认颜色组：
+
+| 颜色组 | 默认颜色 | 内置伤害类型 |
+| --- | --- | --- |
+| `fire` | `#ff7014` | 火焰、熔岩、岩浆块、火球、爆炸、烟花 |
+| `frost` | `#4bd2ff` | 冰冻、溺水伤害 |
+| `plant` | `#50dc3c` | 仙人掌、甜浆果丛 |
+| `arcane` | `#b950ff` | 魔法、间接魔法、龙息、音爆、荆棘、凋零、凋零头、虚空、世界边界、强制击杀 |
+| `shock` | `#d8f6ff` | 雷电伤害 |
+| `starvation` | `#9a7a32` | 饥饿伤害 |
+| `ender` | `#2bd6b3` | 末影珍珠伤害 |
+| `fallback` | `#ff0000` | 未匹配伤害、原版物理伤害、蜜蜂蜇刺、窒息、实体挤压 |
+
+例如，让某个自定义带刺植物伤害使用植物性颜色：
 
 ```json
 "damageTypeOverrides": {
-  "examplemod:acid": "toxic"
+  "examplemod:thorny_vine": "plant"
 }
 ```
 

@@ -18,12 +18,9 @@ public class OverlayTextureMixin {
 	private static final int[] CUSTOM_HURT_OVERLAY_ROWS = {
 		DamageOverlayPalette.FIRE_HURT_ROW,
 		DamageOverlayPalette.FROST_HURT_ROW,
-		DamageOverlayPalette.TOXIC_HURT_ROW,
+		DamageOverlayPalette.PLANT_HURT_ROW,
 		DamageOverlayPalette.VANILLA_HURT_ROW,
 		DamageOverlayPalette.ARCANE_HURT_ROW,
-		DamageOverlayPalette.WATER_HURT_ROW,
-		DamageOverlayPalette.VOID_HURT_ROW,
-		DamageOverlayPalette.WITHER_HURT_ROW,
 		DamageOverlayPalette.SHOCK_HURT_ROW,
 		DamageOverlayPalette.STARVATION_HURT_ROW,
 		DamageOverlayPalette.ENDER_HURT_ROW

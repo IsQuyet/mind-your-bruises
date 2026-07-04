@@ -10,12 +10,9 @@ public final class DamageOverlayPalette {
 
 	public static final int FIRE_HURT_ROW = 0;
 	public static final int FROST_HURT_ROW = 1;
-	public static final int TOXIC_HURT_ROW = 2;
+	public static final int PLANT_HURT_ROW = 2;
 	public static final int VANILLA_HURT_ROW = 3;
 	public static final int ARCANE_HURT_ROW = 4;
-	public static final int WATER_HURT_ROW = 6;
-	public static final int VOID_HURT_ROW = 7;
-	public static final int WITHER_HURT_ROW = 8;
 	public static final int SHOCK_HURT_ROW = 9;
 	public static final int STARVATION_HURT_ROW = 11;
 	public static final int ENDER_HURT_ROW = 12;
@@ -53,7 +50,7 @@ public final class DamageOverlayPalette {
 		}
 
 		if (containsAny(damageTypePath, "drown")) {
-			return WATER_HURT_ROW;
+			return FROST_HURT_ROW;
 		}
 
 		if (containsAny(damageTypePath, "lightning", "shock")) {
@@ -73,19 +70,19 @@ public final class DamageOverlayPalette {
 		}
 
 		if (containsAny(damageTypePath, "out_of_world", "outside_border", "void", "generic_kill")) {
-			return VOID_HURT_ROW;
+			return ARCANE_HURT_ROW;
 		}
 
 		if (containsAny(damageTypePath, "wither")) {
-			return WITHER_HURT_ROW;
+			return ARCANE_HURT_ROW;
 		}
 
 		if (containsAny(damageTypePath, "magic", "dragon_breath", "sonic_boom", "thorns")) {
 			return ARCANE_HURT_ROW;
 		}
 
-		if (containsAny(damageTypePath, "cactus", "sweet_berry", "sting", "poison")) {
-			return TOXIC_HURT_ROW;
+		if (containsAny(damageTypePath, "cactus", "sweet_berry")) {
+			return PLANT_HURT_ROW;
 		}
 
 		return VANILLA_HURT_ROW;

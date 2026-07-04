@@ -1,13 +1,10 @@
 package io.github.isquyet.mindyourbruises.client.render;
 
-import io.github.isquyet.mindyourbruises.client.MindYourBruisesConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.LinkedHashMap;
@@ -29,9 +26,9 @@ public final class DamageTintRegistry {
 
 	public static void rememberDamage(int entityId, Holder<DamageType> damageTypeHolder) {
 		Identifier damageTypeId = resolveDamageTypeId(damageTypeHolder);
-		int hurtOverlayRow = selectEntityAwareHurtOverlayRow(resolveLivingEntity(entityId), damageTypeId, DamageOverlayPalette.selectOverlayRow(damageTypeId));
+		int hurtOverlayRow = DamageOverlayPalette.selectOverlayRow(damageTypeId);
 
-		RECENT_DAMAGE_BY_ENTITY_ID.put(entityId, new DamageTintEntry(hurtOverlayRow, damageTypeId, currentGameTime()));
+		RECENT_DAMAGE_BY_ENTITY_ID.put(entityId, new DamageTintEntry(hurtOverlayRow, currentGameTime()));
 	}
 
 	public static int getHurtOverlayRow(LivingEntity entity, boolean hasHurtOverlay) {
@@ -50,47 +47,7 @@ public final class DamageTintRegistry {
 			return DamageOverlayPalette.VANILLA_HURT_ROW;
 		}
 
-		return selectEntityAwareHurtOverlayRow(entity, damageTintEntry.damageTypeId(), damageTintEntry.hurtOverlayRow());
-	}
-
-	private static int selectEntityAwareHurtOverlayRow(LivingEntity entity, Identifier damageTypeId, int storedHurtOverlayRow) {
-		MindYourBruisesConfig config = MindYourBruisesConfig.get();
-		if (!config.enabled() || !config.useStatusEffectHints() || entity == null || damageTypeId == null) {
-			return storedHurtOverlayRow;
-		}
-
-		boolean magicDamage = "minecraft".equals(damageTypeId.getNamespace()) && "magic".equals(damageTypeId.getPath());
-		if (!magicDamage) {
-			return storedHurtOverlayRow;
-		}
-
-		if (entity.hasEffect(MobEffects.WITHER)) {
-			return DamageOverlayPalette.WITHER_HURT_ROW;
-		}
-
-		if (entity.hasEffect(MobEffects.POISON)) {
-			return DamageOverlayPalette.TOXIC_HURT_ROW;
-		}
-
-		return storedHurtOverlayRow;
-	}
-
-	private static LivingEntity resolveLivingEntity(int entityId) {
-		Entity entity = resolveEntity(entityId);
-		if (entity instanceof LivingEntity livingEntity) {
-			return livingEntity;
-		}
-
-		return null;
-	}
-
-	private static Entity resolveEntity(int entityId) {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.level == null || entityId < 0) {
-			return null;
-		}
-
-		return minecraft.level.getEntity(entityId);
+		return damageTintEntry.hurtOverlayRow();
 	}
 
 	private static Identifier resolveDamageTypeId(Holder<DamageType> damageTypeHolder) {
@@ -112,6 +69,6 @@ public final class DamageTintRegistry {
 		return minecraft.level.getGameTime();
 	}
 
-	private record DamageTintEntry(int hurtOverlayRow, Identifier damageTypeId, long gameTime) {
+	private record DamageTintEntry(int hurtOverlayRow, long gameTime) {
 	}
 }
