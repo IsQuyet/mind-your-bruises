@@ -30,6 +30,8 @@ run/config/mind-your-bruises.json
 
 The config uses one JSON file directly under `config/`.
 
+If Mod Menu is installed, you can also open the in-game configuration screen from the Mod Menu entry. The in-game screen supports the main toggle, fixed color group color pickers, and advanced damage type overrides.
+
 Example config:
 
 ```json
@@ -90,7 +92,10 @@ If a damage type is not listed in `damageTypeOverrides`, Mind Your Bruises falls
 
 - Minecraft 1.21.11
 - Fabric Loader 0.19.3 or newer
+- YetAnotherConfigLib 3.8.1 or newer
 - Java 21 or newer
+
+Mod Menu is optional, but recommended if you want to edit the config in game.
 
 ## Compatibility
 

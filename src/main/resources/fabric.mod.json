@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"client": [
 			"io.github.isquyet.mindyourbruises.client.MindYourBruisesClient"
+		],
+		"modmenu": [
+			"io.github.isquyet.mindyourbruises.client.config.MindYourBruisesModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -28,6 +31,10 @@
 	"depends": {
 		"fabricloader": ">=0.19.3",
 		"minecraft": "~1.21.11",
-		"java": ">=21"
+		"java": ">=21",
+		"yet_another_config_lib_v3": ">=3.8.1"
+	},
+	"suggests": {
+		"modmenu": ">=17.0.0-beta.1"
 	}
 }

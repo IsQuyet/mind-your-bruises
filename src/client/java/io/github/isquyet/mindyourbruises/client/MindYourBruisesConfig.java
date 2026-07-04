@@ -12,7 +12,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -30,6 +32,7 @@ public class MindYourBruisesConfig {
 	private static final String DEFAULT_SHOCK_COLOR = "#d8f6ff";
 	private static final String DEFAULT_STARVATION_COLOR = "#9a7a32";
 	private static final String DEFAULT_ENDER_COLOR = "#2bd6b3";
+	private static final String VALID_COLOR_GROUP_NAMES = "fire, frost, plant, fallback, arcane, shock, starvation, ender";
 
 	private static MindYourBruisesConfig instance = new MindYourBruisesConfig();
 
@@ -116,6 +119,7 @@ public class MindYourBruisesConfig {
 
 	public static void save() {
 		try {
+			instance.normalizeDefaults();
 			Files.createDirectories(CONFIG_PATH.getParent());
 			try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
 				GSON.toJson(instance, writer);
@@ -127,6 +131,122 @@ public class MindYourBruisesConfig {
 
 	public boolean enabled() {
 		return enabled == null ? DEFAULT_ENABLED : enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String fireColor() {
+		return normalizeColor(fireColor, DEFAULT_FIRE_COLOR).color();
+	}
+
+	public void setFireColor(String fireColor) {
+		this.fireColor = normalizeColor(fireColor, DEFAULT_FIRE_COLOR).color();
+	}
+
+	public String frostColor() {
+		return normalizeColor(frostColor, DEFAULT_FROST_COLOR).color();
+	}
+
+	public void setFrostColor(String frostColor) {
+		this.frostColor = normalizeColor(frostColor, DEFAULT_FROST_COLOR).color();
+	}
+
+	public String plantColor() {
+		return normalizeColor(plantColor, DEFAULT_PLANT_COLOR).color();
+	}
+
+	public void setPlantColor(String plantColor) {
+		this.plantColor = normalizeColor(plantColor, DEFAULT_PLANT_COLOR).color();
+	}
+
+	public String fallbackColor() {
+		return normalizeColor(fallbackColor, DEFAULT_FALLBACK_COLOR).color();
+	}
+
+	public void setFallbackColor(String fallbackColor) {
+		this.fallbackColor = normalizeColor(fallbackColor, DEFAULT_FALLBACK_COLOR).color();
+	}
+
+	public String arcaneColor() {
+		return normalizeColor(arcaneColor, DEFAULT_ARCANE_COLOR).color();
+	}
+
+	public void setArcaneColor(String arcaneColor) {
+		this.arcaneColor = normalizeColor(arcaneColor, DEFAULT_ARCANE_COLOR).color();
+	}
+
+	public String shockColor() {
+		return normalizeColor(shockColor, DEFAULT_SHOCK_COLOR).color();
+	}
+
+	public void setShockColor(String shockColor) {
+		this.shockColor = normalizeColor(shockColor, DEFAULT_SHOCK_COLOR).color();
+	}
+
+	public String starvationColor() {
+		return normalizeColor(starvationColor, DEFAULT_STARVATION_COLOR).color();
+	}
+
+	public void setStarvationColor(String starvationColor) {
+		this.starvationColor = normalizeColor(starvationColor, DEFAULT_STARVATION_COLOR).color();
+	}
+
+	public String enderColor() {
+		return normalizeColor(enderColor, DEFAULT_ENDER_COLOR).color();
+	}
+
+	public void setEnderColor(String enderColor) {
+		this.enderColor = normalizeColor(enderColor, DEFAULT_ENDER_COLOR).color();
+	}
+
+	public static String defaultFireColor() {
+		return DEFAULT_FIRE_COLOR;
+	}
+
+	public static String defaultFrostColor() {
+		return DEFAULT_FROST_COLOR;
+	}
+
+	public static String defaultPlantColor() {
+		return DEFAULT_PLANT_COLOR;
+	}
+
+	public static String defaultFallbackColor() {
+		return DEFAULT_FALLBACK_COLOR;
+	}
+
+	public static String defaultArcaneColor() {
+		return DEFAULT_ARCANE_COLOR;
+	}
+
+	public static String defaultShockColor() {
+		return DEFAULT_SHOCK_COLOR;
+	}
+
+	public static String defaultStarvationColor() {
+		return DEFAULT_STARVATION_COLOR;
+	}
+
+	public static String defaultEnderColor() {
+		return DEFAULT_ENDER_COLOR;
+	}
+
+	public List<String> damageTypeOverrideLines() {
+		return damageTypeOverridesToLines(normalizeDamageTypeOverrides(damageTypeOverrides));
+	}
+
+	public void setDamageTypeOverrideLines(List<String> damageTypeOverrideLines) {
+		damageTypeOverrides = damageTypeOverrideLinesToOverrides(damageTypeOverrideLines);
+	}
+
+	public static List<String> defaultDamageTypeOverrideLines() {
+		return damageTypeOverridesToLines(defaultDamageTypeOverrides());
+	}
+
+	public static String validColorGroupNames() {
+		return VALID_COLOR_GROUP_NAMES;
 	}
 
 	public int colorForOverlayRow(int overlayRow) {
@@ -245,6 +365,44 @@ public class MindYourBruisesConfig {
 		}
 
 		return normalizedOverrides;
+	}
+
+	private static List<String> damageTypeOverridesToLines(Map<String, String> overrides) {
+		Map<String, String> normalizedOverrides = normalizeDamageTypeOverrides(overrides);
+		List<String> damageTypeOverrideLines = new ArrayList<>();
+		for (Map.Entry<String, String> override : normalizedOverrides.entrySet()) {
+			damageTypeOverrideLines.add(override.getKey() + "=" + override.getValue());
+		}
+
+		return damageTypeOverrideLines;
+	}
+
+	private static Map<String, String> damageTypeOverrideLinesToOverrides(List<String> damageTypeOverrideLines) {
+		if (damageTypeOverrideLines == null) {
+			return defaultDamageTypeOverrides();
+		}
+
+		Map<String, String> parsedOverrides = new LinkedHashMap<>();
+		for (String damageTypeOverrideLine : damageTypeOverrideLines) {
+			if (damageTypeOverrideLine == null) {
+				continue;
+			}
+
+			String[] overrideParts = damageTypeOverrideLine.split("=", 2);
+			if (overrideParts.length != 2) {
+				continue;
+			}
+
+			String damageTypeId = overrideParts[0].trim().toLowerCase(Locale.ROOT);
+			String overlayRowName = overrideParts[1].trim().toLowerCase(Locale.ROOT);
+			if (damageTypeId.isEmpty() || overlayRowForName(overlayRowName) == null) {
+				continue;
+			}
+
+			parsedOverrides.put(damageTypeId, overlayRowName);
+		}
+
+		return normalizeDamageTypeOverrides(parsedOverrides);
 	}
 
 	private static Integer overlayRowForName(String overlayRowName) {

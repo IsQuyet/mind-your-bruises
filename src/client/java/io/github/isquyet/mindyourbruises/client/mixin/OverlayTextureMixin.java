@@ -3,6 +3,7 @@ package io.github.isquyet.mindyourbruises.client.mixin;
 import com.mojang.blaze3d.platform.NativeImage;
 import io.github.isquyet.mindyourbruises.client.MindYourBruisesClient;
 import io.github.isquyet.mindyourbruises.client.render.DamageOverlayPalette;
+import io.github.isquyet.mindyourbruises.client.render.DamageOverlayTextureRefresher;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import org.spongepowered.asm.mixin.Final;
@@ -32,6 +33,11 @@ public class OverlayTextureMixin {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void mindyourbruises$recolorHurtOverlayRows(CallbackInfo callbackInfo) {
+		DamageOverlayTextureRefresher.setRefreshAction(this::mindyourbruises$recolorHurtOverlayRows);
+		mindyourbruises$recolorHurtOverlayRows();
+	}
+
+	private void mindyourbruises$recolorHurtOverlayRows() {
 		NativeImage pixels = this.texture.getPixels();
 		if (pixels == null) {
 			MindYourBruisesClient.LOGGER.warn("Could not recolor entity overlay texture because its pixels are unavailable.");
