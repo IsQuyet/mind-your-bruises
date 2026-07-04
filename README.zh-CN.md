@@ -30,7 +30,7 @@ run/config/mind-your-bruises.json
 
 配置使用一个直接位于 `config/` 下的 JSON 文件。
 
-如果安装了 Mod Menu，也可以从 Mod Menu 的模组条目打开游戏内配置界面。游戏内配置界面支持总开关、固定颜色组的颜色选择器，以及高级伤害类型覆盖配置。
+如果安装了 Mod Menu 和 YetAnotherConfigLib，也可以从 Mod Menu 的模组条目打开游戏内配置界面。游戏内配置界面支持总开关、固定颜色组的颜色选择器，以及高级伤害类型覆盖配置。
 
 配置示例：
 
@@ -85,10 +85,9 @@ run/config/mind-your-bruises.json
 
 - Minecraft 1.21.11
 - Fabric Loader 0.19.3 或更新版本
-- YetAnotherConfigLib 3.8.1 或更新版本
 - Java 21 或更新版本
 
-Mod Menu 是可选依赖，但如果你希望在游戏内编辑配置，推荐安装。
+Mod Menu 和 YetAnotherConfigLib 是可选依赖，但如果你希望在游戏内编辑配置，推荐安装。没有安装它们时，模组仍然可以正常工作，可以手动编辑 `mind-your-bruises.json` 后重启游戏来配置。
 
 ## 兼容性
 
