@@ -28,14 +28,12 @@ public class MindYourBruisesConfig {
 	private static final String DEFAULT_TOXIC_COLOR = "#50dc3c";
 	private static final String DEFAULT_FALLBACK_COLOR = "#ff0000";
 	private static final String DEFAULT_ARCANE_COLOR = "#b950ff";
-	private static final String DEFAULT_BLAST_COLOR = "#ffd540";
 	private static final String DEFAULT_WATER_COLOR = "#3c78ff";
 	private static final String DEFAULT_VOID_COLOR = "#2d005a";
 	private static final String DEFAULT_WITHER_COLOR = "#d6d6c8";
 	private static final String DEFAULT_SHOCK_COLOR = "#d8f6ff";
 	private static final String DEFAULT_STARVATION_COLOR = "#9a7a32";
 	private static final String DEFAULT_ENDER_COLOR = "#2bd6b3";
-	private static final String DEFAULT_SUFFOCATION_COLOR = "#777f86";
 
 	private static MindYourBruisesConfig instance = new MindYourBruisesConfig();
 
@@ -46,14 +44,12 @@ public class MindYourBruisesConfig {
 	private String toxicColor = DEFAULT_TOXIC_COLOR;
 	private String fallbackColor = DEFAULT_FALLBACK_COLOR;
 	private String arcaneColor = DEFAULT_ARCANE_COLOR;
-	private String blastColor = DEFAULT_BLAST_COLOR;
 	private String waterColor = DEFAULT_WATER_COLOR;
 	private String voidColor = DEFAULT_VOID_COLOR;
 	private String witherColor = DEFAULT_WITHER_COLOR;
 	private String shockColor = DEFAULT_SHOCK_COLOR;
 	private String starvationColor = DEFAULT_STARVATION_COLOR;
 	private String enderColor = DEFAULT_ENDER_COLOR;
-	private String suffocationColor = DEFAULT_SUFFOCATION_COLOR;
 	private Map<String, String> damageTypeOverrides = defaultDamageTypeOverrides();
 
 	public static MindYourBruisesConfig get() {
@@ -155,14 +151,12 @@ public class MindYourBruisesConfig {
 			case DamageOverlayPalette.FROST_HURT_ROW -> parseRgbColor(frostColor, DEFAULT_FROST_COLOR);
 			case DamageOverlayPalette.TOXIC_HURT_ROW -> parseRgbColor(toxicColor, DEFAULT_TOXIC_COLOR);
 			case DamageOverlayPalette.ARCANE_HURT_ROW -> parseRgbColor(arcaneColor, DEFAULT_ARCANE_COLOR);
-			case DamageOverlayPalette.BLAST_HURT_ROW -> parseRgbColor(blastColor, DEFAULT_BLAST_COLOR);
 			case DamageOverlayPalette.WATER_HURT_ROW -> parseRgbColor(waterColor, DEFAULT_WATER_COLOR);
 			case DamageOverlayPalette.VOID_HURT_ROW -> parseRgbColor(voidColor, DEFAULT_VOID_COLOR);
 			case DamageOverlayPalette.WITHER_HURT_ROW -> parseRgbColor(witherColor, DEFAULT_WITHER_COLOR);
 			case DamageOverlayPalette.SHOCK_HURT_ROW -> parseRgbColor(shockColor, DEFAULT_SHOCK_COLOR);
 			case DamageOverlayPalette.STARVATION_HURT_ROW -> parseRgbColor(starvationColor, DEFAULT_STARVATION_COLOR);
 			case DamageOverlayPalette.ENDER_HURT_ROW -> parseRgbColor(enderColor, DEFAULT_ENDER_COLOR);
-			case DamageOverlayPalette.SUFFOCATION_HURT_ROW -> parseRgbColor(suffocationColor, DEFAULT_SUFFOCATION_COLOR);
 			default -> parseRgbColor(fallbackColor, DEFAULT_FALLBACK_COLOR);
 		};
 	}
@@ -212,10 +206,6 @@ public class MindYourBruisesConfig {
 		arcaneColor = arcaneColorNormalization.color();
 		configChanged |= arcaneColorNormalization.changed();
 
-		ColorNormalization blastColorNormalization = normalizeColor(blastColor, DEFAULT_BLAST_COLOR);
-		blastColor = blastColorNormalization.color();
-		configChanged |= blastColorNormalization.changed();
-
 		ColorNormalization waterColorNormalization = normalizeColor(waterColor, DEFAULT_WATER_COLOR);
 		waterColor = waterColorNormalization.color();
 		configChanged |= waterColorNormalization.changed();
@@ -239,10 +229,6 @@ public class MindYourBruisesConfig {
 		ColorNormalization enderColorNormalization = normalizeColor(enderColor, DEFAULT_ENDER_COLOR);
 		enderColor = enderColorNormalization.color();
 		configChanged |= enderColorNormalization.changed();
-
-		ColorNormalization suffocationColorNormalization = normalizeColor(suffocationColor, DEFAULT_SUFFOCATION_COLOR);
-		suffocationColor = suffocationColorNormalization.color();
-		configChanged |= suffocationColorNormalization.changed();
 
 		Map<String, String> normalizedOverrides = normalizeDamageTypeOverrides(damageTypeOverrides);
 		if (!normalizedOverrides.equals(damageTypeOverrides)) {
@@ -304,14 +290,12 @@ public class MindYourBruisesConfig {
 			case "toxic" -> DamageOverlayPalette.TOXIC_HURT_ROW;
 			case "fallback", "default", "vanilla" -> DamageOverlayPalette.VANILLA_HURT_ROW;
 			case "arcane" -> DamageOverlayPalette.ARCANE_HURT_ROW;
-			case "blast" -> DamageOverlayPalette.BLAST_HURT_ROW;
 			case "water" -> DamageOverlayPalette.WATER_HURT_ROW;
 			case "void" -> DamageOverlayPalette.VOID_HURT_ROW;
 			case "wither" -> DamageOverlayPalette.WITHER_HURT_ROW;
 			case "shock" -> DamageOverlayPalette.SHOCK_HURT_ROW;
 			case "starvation" -> DamageOverlayPalette.STARVATION_HURT_ROW;
 			case "ender" -> DamageOverlayPalette.ENDER_HURT_ROW;
-			case "suffocation" -> DamageOverlayPalette.SUFFOCATION_HURT_ROW;
 			default -> null;
 		};
 	}
@@ -356,13 +340,12 @@ public class MindYourBruisesConfig {
 		overrides.put("minecraft:lightning_bolt", "shock");
 		overrides.put("minecraft:starve", "starvation");
 		overrides.put("minecraft:ender_pearl", "ender");
-		overrides.put("minecraft:in_wall", "suffocation");
 		overrides.put("minecraft:dragon_breath", "arcane");
 		overrides.put("minecraft:sonic_boom", "arcane");
 		overrides.put("minecraft:thorns", "arcane");
-		overrides.put("minecraft:explosion", "blast");
-		overrides.put("minecraft:player_explosion", "blast");
-		overrides.put("minecraft:fireworks", "blast");
+		overrides.put("minecraft:explosion", "fire");
+		overrides.put("minecraft:player_explosion", "fire");
+		overrides.put("minecraft:fireworks", "fire");
 		overrides.put("minecraft:drown", "water");
 		overrides.put("minecraft:out_of_world", "void");
 		overrides.put("minecraft:outside_border", "void");

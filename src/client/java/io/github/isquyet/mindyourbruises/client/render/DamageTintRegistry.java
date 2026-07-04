@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.LinkedHashMap;
@@ -28,7 +29,7 @@ public final class DamageTintRegistry {
 
 	public static void rememberDamage(int entityId, Holder<DamageType> damageTypeHolder) {
 		Identifier damageTypeId = resolveDamageTypeId(damageTypeHolder);
-		int hurtOverlayRow = DamageOverlayPalette.selectOverlayRow(damageTypeId);
+		int hurtOverlayRow = selectEntityAwareHurtOverlayRow(resolveLivingEntity(entityId), damageTypeId, DamageOverlayPalette.selectOverlayRow(damageTypeId));
 
 		RECENT_DAMAGE_BY_ENTITY_ID.put(entityId, new DamageTintEntry(hurtOverlayRow, damageTypeId, currentGameTime()));
 	}
@@ -54,16 +55,38 @@ public final class DamageTintRegistry {
 
 	private static int selectEntityAwareHurtOverlayRow(LivingEntity entity, Identifier damageTypeId, int storedHurtOverlayRow) {
 		MindYourBruisesConfig config = MindYourBruisesConfig.get();
-		if (!config.enabled() || !config.useStatusEffectHints() || damageTypeId == null) {
+		if (!config.enabled() || !config.useStatusEffectHints() || entity == null || damageTypeId == null) {
 			return storedHurtOverlayRow;
 		}
 
 		boolean magicDamage = "minecraft".equals(damageTypeId.getNamespace()) && "magic".equals(damageTypeId.getPath());
+		if (magicDamage && entity.hasEffect(MobEffects.WITHER)) {
+			return DamageOverlayPalette.WITHER_HURT_ROW;
+		}
+
 		if (magicDamage && entity.hasEffect(MobEffects.POISON)) {
 			return DamageOverlayPalette.TOXIC_HURT_ROW;
 		}
 
 		return storedHurtOverlayRow;
+	}
+
+	private static LivingEntity resolveLivingEntity(int entityId) {
+		Entity entity = resolveEntity(entityId);
+		if (entity instanceof LivingEntity livingEntity) {
+			return livingEntity;
+		}
+
+		return null;
+	}
+
+	private static Entity resolveEntity(int entityId) {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.level == null || entityId < 0) {
+			return null;
+		}
+
+		return minecraft.level.getEntity(entityId);
 	}
 
 	private static Identifier resolveDamageTypeId(Holder<DamageType> damageTypeHolder) {

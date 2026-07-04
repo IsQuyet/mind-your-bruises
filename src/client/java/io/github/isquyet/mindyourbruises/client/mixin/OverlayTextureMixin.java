@@ -21,14 +21,12 @@ public class OverlayTextureMixin {
 		DamageOverlayPalette.TOXIC_HURT_ROW,
 		DamageOverlayPalette.VANILLA_HURT_ROW,
 		DamageOverlayPalette.ARCANE_HURT_ROW,
-		DamageOverlayPalette.BLAST_HURT_ROW,
 		DamageOverlayPalette.WATER_HURT_ROW,
 		DamageOverlayPalette.VOID_HURT_ROW,
 		DamageOverlayPalette.WITHER_HURT_ROW,
 		DamageOverlayPalette.SHOCK_HURT_ROW,
 		DamageOverlayPalette.STARVATION_HURT_ROW,
-		DamageOverlayPalette.ENDER_HURT_ROW,
-		DamageOverlayPalette.SUFFOCATION_HURT_ROW
+		DamageOverlayPalette.ENDER_HURT_ROW
 	};
 
 	@Shadow

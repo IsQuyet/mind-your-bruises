@@ -4,12 +4,12 @@
 
 Mind Your Bruises（注意你的淤青）是一个 Minecraft 1.21.11 Fabric 客户端模组，会根据伤害类型修改实体模型受击时的原版受伤覆盖颜色。
 
-模组保留原版红色作为兜底颜色，并为火焰、冰冻、毒性、魔法、爆炸、水、虚空、凋零、雷电、饥饿、末影珍珠和窒息等大类伤害使用不同的受击覆盖颜色。
+模组保留原版红色作为兜底颜色，并为火焰和爆炸、冰冻、毒性、魔法、水、虚空、凋零、雷电、饥饿和末影珍珠等大类伤害使用不同的受击覆盖颜色。
 
 ## 功能
 
 - 在客户端重新着色原版实体受击覆盖效果。
-- 为火焰、冰冻、毒性、魔法、爆炸、水、虚空、凋零、雷电、饥饿、末影珍珠和窒息等大类伤害使用不同颜色。
+- 为火焰和爆炸、冰冻、毒性、魔法、水、虚空、凋零、雷电、饥饿和末影珍珠等大类伤害使用不同颜色。
 - 对未匹配的伤害类型保留原版红色作为兜底颜色。
 - 支持通过 JSON 配置颜色和伤害类型映射。
 - 可以根据状态效果进行辅助判断，让原版报告为魔法伤害的中毒效果显示为毒性颜色。
@@ -42,14 +42,12 @@ run/config/mind-your-bruises.json
   "toxicColor": "#50dc3c",
   "fallbackColor": "#ff0000",
   "arcaneColor": "#b950ff",
-  "blastColor": "#ffd540",
   "waterColor": "#3c78ff",
   "voidColor": "#2d005a",
   "witherColor": "#d6d6c8",
   "shockColor": "#d8f6ff",
   "starvationColor": "#9a7a32",
   "enderColor": "#2bd6b3",
-  "suffocationColor": "#777f86",
   "damageTypeOverrides": {
     "minecraft:lava": "fire",
     "minecraft:freeze": "frost",
@@ -57,8 +55,7 @@ run/config/mind-your-bruises.json
     "minecraft:wither_skull": "wither",
     "minecraft:lightning_bolt": "shock",
     "minecraft:starve": "starvation",
-    "minecraft:ender_pearl": "ender",
-    "minecraft:in_wall": "suffocation"
+    "minecraft:ender_pearl": "ender"
   }
 }
 ```
@@ -69,8 +66,8 @@ run/config/mind-your-bruises.json
 
 - `enabled`：是否启用重新着色后的受击覆盖。设置为 `false` 时会回到原版红色。
 - `useStatusEffectHints`：当伤害类型本身不够细时，允许模组参考实体当前的状态效果。例如原版中毒效果 tick 使用的是 `minecraft:magic`，开启后这类带中毒状态的魔法伤害会显示为毒性颜色。
-- `fireColor`、`frostColor`、`toxicColor`、`fallbackColor`、`arcaneColor`、`blastColor`、`waterColor`、`voidColor`、`witherColor`、`shockColor`、`starvationColor`、`enderColor` 和 `suffocationColor`：颜色配置，使用 `#rrggbb` 格式。漏写 `#` 也可以，模组保存配置时会自动补齐并规范化。
-- `damageTypeOverrides`：把某个伤害类型 id 映射到一个颜色组。可用颜色组为 `fire`、`frost`、`toxic`、`fallback`、`arcane`、`blast`、`water`、`void`、`wither`、`shock`、`starvation`、`ender` 和 `suffocation`。
+- `fireColor`、`frostColor`、`toxicColor`、`fallbackColor`、`arcaneColor`、`waterColor`、`voidColor`、`witherColor`、`shockColor`、`starvationColor` 和 `enderColor`：颜色配置，使用 `#rrggbb` 格式。漏写 `#` 也可以，模组保存配置时会自动补齐并规范化。
+- `damageTypeOverrides`：把某个伤害类型 id 映射到一个颜色组。可用颜色组为 `fire`、`frost`、`toxic`、`fallback`、`arcane`、`water`、`void`、`wither`、`shock`、`starvation` 和 `ender`。爆炸伤害默认使用 `fire` 颜色组。
 
 例如，让某个自定义酸液伤害使用毒性颜色：
 

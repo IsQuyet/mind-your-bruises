@@ -13,14 +13,12 @@ public final class DamageOverlayPalette {
 	public static final int TOXIC_HURT_ROW = 2;
 	public static final int VANILLA_HURT_ROW = 3;
 	public static final int ARCANE_HURT_ROW = 4;
-	public static final int BLAST_HURT_ROW = 5;
 	public static final int WATER_HURT_ROW = 6;
 	public static final int VOID_HURT_ROW = 7;
 	public static final int WITHER_HURT_ROW = 8;
 	public static final int SHOCK_HURT_ROW = 9;
 	public static final int STARVATION_HURT_ROW = 11;
 	public static final int ENDER_HURT_ROW = 12;
-	public static final int SUFFOCATION_HURT_ROW = 13;
 
 	private DamageOverlayPalette() {
 	}
@@ -70,12 +68,8 @@ public final class DamageOverlayPalette {
 			return ENDER_HURT_ROW;
 		}
 
-		if (containsAny(damageTypePath, "in_wall", "suffocation", "suffocate")) {
-			return SUFFOCATION_HURT_ROW;
-		}
-
 		if (containsAny(damageTypePath, "explosion", "fireworks")) {
-			return BLAST_HURT_ROW;
+			return FIRE_HURT_ROW;
 		}
 
 		if (containsAny(damageTypePath, "out_of_world", "outside_border", "void", "generic_kill")) {
