@@ -45,15 +45,7 @@ run/config/mind-your-bruises.json
   "shockColor": "#d8f6ff",
   "starvationColor": "#9a7a32",
   "enderColor": "#2bd6b3",
-  "damageTypeOverrides": {
-    "minecraft:lava": "fire",
-    "minecraft:freeze": "frost",
-    "minecraft:wither": "arcane",
-    "minecraft:wither_skull": "arcane",
-    "minecraft:lightning_bolt": "shock",
-    "minecraft:starve": "starvation",
-    "minecraft:ender_pearl": "ender"
-  }
+  "damageTypeOverrides": {}
 }
 ```
 
@@ -63,7 +55,7 @@ run/config/mind-your-bruises.json
 
 - `enabled`：是否启用重新着色后的受击覆盖。设置为 `false` 时会回到原版红色。
 - `fireColor`、`frostColor`、`plantColor`、`fallbackColor`、`arcaneColor`、`shockColor`、`starvationColor` 和 `enderColor`：颜色配置，使用 `#rrggbb` 格式。漏写 `#` 也可以，模组保存配置时会自动补齐并规范化。
-- `damageTypeOverrides`：把某个伤害类型 id 映射到一个颜色组。可用颜色组为 `fire`、`frost`、`plant`、`fallback`、`arcane`、`shock`、`starvation` 和 `ender`。爆炸伤害默认使用 `fire` 颜色组；溺水伤害默认使用 `frost` 颜色组；虚空、世界边界和强制击杀默认使用 `arcane` 颜色组。
+- `damageTypeOverrides`：在内置映射之上添加自定义覆盖。左边是伤害类型 id，右边是颜色组。可用颜色组为 `fire`、`frost`、`plant`、`fallback`、`arcane`、`shock`、`starvation` 和 `ender`。内置映射不会写入配置文件；如果想覆盖某个内置规则，请在这里显式添加。
 
 默认颜色组：
 
@@ -78,11 +70,12 @@ run/config/mind-your-bruises.json
 | `ender` | `#2bd6b3` | 末影珍珠伤害 |
 | `fallback` | `#ff0000` | 未匹配伤害、原版物理伤害、蜜蜂蜇刺、窒息、实体挤压 |
 
-例如，让某个自定义带刺植物伤害使用植物性颜色：
+例如，让某个自定义带刺植物伤害使用植物性颜色，并强制让原版溺水伤害回到兜底红色：
 
 ```json
 "damageTypeOverrides": {
-  "examplemod:thorny_vine": "plant"
+  "examplemod:thorny_vine": "plant",
+  "minecraft:drown": "fallback"
 }
 ```
 

@@ -45,7 +45,7 @@ public class MindYourBruisesConfig {
 	private String shockColor = DEFAULT_SHOCK_COLOR;
 	private String starvationColor = DEFAULT_STARVATION_COLOR;
 	private String enderColor = DEFAULT_ENDER_COLOR;
-	private Map<String, String> damageTypeOverrides = defaultDamageTypeOverrides();
+	private Map<String, String> damageTypeOverrides = new LinkedHashMap<>();
 
 	public static MindYourBruisesConfig get() {
 		return instance;
@@ -242,7 +242,7 @@ public class MindYourBruisesConfig {
 	}
 
 	public static List<String> defaultDamageTypeOverrideLines() {
-		return damageTypeOverridesToLines(defaultDamageTypeOverrides());
+		return new ArrayList<>();
 	}
 
 	public static String validColorGroupNames() {
@@ -345,11 +345,12 @@ public class MindYourBruisesConfig {
 	}
 
 	private static Map<String, String> normalizeDamageTypeOverrides(Map<String, String> overrides) {
+		Map<String, String> normalizedOverrides = new LinkedHashMap<>();
 		if (overrides == null) {
-			return defaultDamageTypeOverrides();
+			return normalizedOverrides;
 		}
 
-		Map<String, String> normalizedOverrides = new LinkedHashMap<>();
+		Map<String, String> builtInOverrides = builtInDamageTypeOverrides();
 		for (Map.Entry<String, String> override : overrides.entrySet()) {
 			if (override.getKey() == null || override.getValue() == null) {
 				continue;
@@ -358,6 +359,10 @@ public class MindYourBruisesConfig {
 			String damageTypeId = override.getKey().trim().toLowerCase(Locale.ROOT);
 			String overlayRowName = override.getValue().trim().toLowerCase(Locale.ROOT);
 			if (damageTypeId.isEmpty() || overlayRowForName(overlayRowName) == null) {
+				continue;
+			}
+
+			if (overlayRowName.equals(builtInOverrides.get(damageTypeId))) {
 				continue;
 			}
 
@@ -379,7 +384,7 @@ public class MindYourBruisesConfig {
 
 	private static Map<String, String> damageTypeOverrideLinesToOverrides(List<String> damageTypeOverrideLines) {
 		if (damageTypeOverrideLines == null) {
-			return defaultDamageTypeOverrides();
+			return new LinkedHashMap<>();
 		}
 
 		Map<String, String> parsedOverrides = new LinkedHashMap<>();
@@ -446,7 +451,7 @@ public class MindYourBruisesConfig {
 		return true;
 	}
 
-	private static Map<String, String> defaultDamageTypeOverrides() {
+	private static Map<String, String> builtInDamageTypeOverrides() {
 		Map<String, String> overrides = new LinkedHashMap<>();
 		overrides.put("minecraft:in_fire", "fire");
 		overrides.put("minecraft:on_fire", "fire");

@@ -45,15 +45,7 @@ Example config:
   "shockColor": "#d8f6ff",
   "starvationColor": "#9a7a32",
   "enderColor": "#2bd6b3",
-  "damageTypeOverrides": {
-    "minecraft:lava": "fire",
-    "minecraft:freeze": "frost",
-    "minecraft:wither": "arcane",
-    "minecraft:wither_skull": "arcane",
-    "minecraft:lightning_bolt": "shock",
-    "minecraft:starve": "starvation",
-    "minecraft:ender_pearl": "ender"
-  }
+  "damageTypeOverrides": {}
 }
 ```
 
@@ -63,7 +55,7 @@ Configuration fields:
 
 - `enabled`: Turns the mod's recolored hurt overlay on or off. When set to `false`, the overlay falls back to vanilla red.
 - `fireColor`, `frostColor`, `plantColor`, `fallbackColor`, `arcaneColor`, `shockColor`, `starvationColor`, and `enderColor`: Hex RGB colors in `#rrggbb` format. Missing `#` is accepted and normalized on save.
-- `damageTypeOverrides`: Maps a damage type id to a color group. Valid color groups are `fire`, `frost`, `plant`, `fallback`, `arcane`, `shock`, `starvation`, and `ender`. Explosion damage uses the `fire` group by default. Drowning damage uses the `frost` group by default. Out-of-world, outside-border, and generic-kill damage use the `arcane` group by default.
+- `damageTypeOverrides`: Adds custom overrides on top of the built-in mappings. The left side is a damage type id and the right side is a color group. Valid color groups are `fire`, `frost`, `plant`, `fallback`, `arcane`, `shock`, `starvation`, and `ender`. Built-in mappings are not written to the config file; to override one, add it here explicitly.
 
 Default color groups:
 
@@ -78,11 +70,12 @@ Default color groups:
 | `ender` | `#2bd6b3` | Ender pearl damage |
 | `fallback` | `#ff0000` | Unmatched damage types, vanilla physical damage, bee stings, suffocation, cramming |
 
-For example, this makes a custom thorny plant damage type use the plant overlay color:
+For example, this makes a custom thorny plant damage type use the plant overlay color, and forces vanilla drowning damage back to the fallback red overlay:
 
 ```json
 "damageTypeOverrides": {
-  "examplemod:thorny_vine": "plant"
+  "examplemod:thorny_vine": "plant",
+  "minecraft:drown": "fallback"
 }
 ```
 
