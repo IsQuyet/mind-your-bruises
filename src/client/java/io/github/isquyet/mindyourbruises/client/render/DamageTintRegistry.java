@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class DamageTintRegistry {
+	private static final boolean HAS_ACTIVE_COMPATIBILITY = DamageTintCompatibility.hasActiveCompatibility();
 	private static final int MAX_TRACKED_ENTITIES = 512;
 	private static final long DAMAGE_TINT_TTL_TICKS = 40L;
 
@@ -62,6 +63,10 @@ public final class DamageTintRegistry {
 	}
 
 	private static int selectHurtOverlayRow(int entityId, Identifier damageTypeId) {
+		if (!HAS_ACTIVE_COMPATIBILITY) {
+			return DamageOverlayPalette.selectOverlayRow(damageTypeId);
+		}
+
 		Integer compatibleOverlayRow = DamageTintCompatibility.overlayRowForDamage(entityId, damageTypeId);
 		return DamageOverlayPalette.selectOverlayRow(damageTypeId, compatibleOverlayRow);
 	}

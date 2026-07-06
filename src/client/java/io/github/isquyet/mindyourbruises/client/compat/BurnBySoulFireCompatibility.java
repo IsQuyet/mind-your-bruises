@@ -22,6 +22,10 @@ public final class BurnBySoulFireCompatibility {
 	private BurnBySoulFireCompatibility() {
 	}
 
+	public static boolean isLoaded() {
+		return LOADED;
+	}
+
 	public static Integer overlayRowForDamage(int entityId, Identifier damageTypeId) {
 		if (!LOADED || !isVanillaFireDamage(damageTypeId)) {
 			return null;
