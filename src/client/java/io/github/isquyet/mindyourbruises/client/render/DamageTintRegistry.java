@@ -1,5 +1,6 @@
 package io.github.isquyet.mindyourbruises.client.render;
 
+import io.github.isquyet.mindyourbruises.client.compat.DamageTintCompatibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
@@ -26,7 +27,7 @@ public final class DamageTintRegistry {
 
 	public static void rememberDamage(int entityId, Holder<DamageType> damageTypeHolder) {
 		Identifier damageTypeId = resolveDamageTypeId(damageTypeHolder);
-		int hurtOverlayRow = DamageOverlayPalette.selectOverlayRow(damageTypeId);
+		int hurtOverlayRow = selectHurtOverlayRow(entityId, damageTypeId);
 
 		RECENT_DAMAGE_BY_ENTITY_ID.put(entityId, new DamageTintEntry(hurtOverlayRow, currentGameTime()));
 	}
@@ -58,6 +59,11 @@ public final class DamageTintRegistry {
 		return damageTypeHolder.unwrapKey()
 			.map(ResourceKey::identifier)
 			.orElse(null);
+	}
+
+	private static int selectHurtOverlayRow(int entityId, Identifier damageTypeId) {
+		Integer compatibleOverlayRow = DamageTintCompatibility.overlayRowForDamage(entityId, damageTypeId);
+		return DamageOverlayPalette.selectOverlayRow(damageTypeId, compatibleOverlayRow);
 	}
 
 	private static long currentGameTime() {

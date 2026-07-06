@@ -25,6 +25,10 @@ public final class DamageOverlayPalette {
 	}
 
 	public static int selectOverlayRow(Identifier damageTypeId) {
+		return selectOverlayRow(damageTypeId, null);
+	}
+
+	public static int selectOverlayRow(Identifier damageTypeId, Integer compatibleOverlayRow) {
 		MindYourBruisesConfig config = MindYourBruisesConfig.get();
 		if (!config.enabled()) {
 			return VANILLA_HURT_ROW;
@@ -40,6 +44,9 @@ public final class DamageOverlayPalette {
 		}
 
 		String damageTypePath = damageTypeId.getPath().toLowerCase(Locale.ROOT);
+		if (compatibleOverlayRow != null) {
+			return compatibleOverlayRow;
+		}
 
 		if (containsAny(damageTypePath, "freeze", "frozen")) {
 			return FROST_HURT_ROW;
