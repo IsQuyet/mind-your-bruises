@@ -2,101 +2,41 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-Mind Your Bruises is a client-side Minecraft Fabric mod for 1.21.11 that recolors the vanilla entity hurt overlay based on the damage type that caused it.
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/mind-your-bruises?logo=modrinth&label=Modrinth&color=00AF5C)](https://modrinth.com/mod/mind-your-bruises)
+[![GitHub Release](https://img.shields.io/github/v/release/IsQuyet/mind-your-bruises?logo=github&label=GitHub%20Release&color=181717)](https://github.com/IsQuyet/mind-your-bruises/releases)
+[![License](https://img.shields.io/github/license/IsQuyet/mind-your-bruises?label=License&color=blue)](LICENSE)
 
-The mod keeps vanilla red as the fallback color, then uses different overlay rows for broad damage categories such as fire and explosion, frost and drowning, plant, arcane/wither/void-like damage, shock, starvation, and ender pearl damage.
+Mind Your Bruises is a client-side Fabric mod that recolors Minecraft's vanilla entity hurt flash based on the type of damage that caused it.
 
 ## Features
 
-- Recolors the vanilla entity hurt overlay on the client.
-- Uses different colors for broad damage categories such as fire and explosion, frost and drowning, plant, arcane/wither/void-like damage, shock, starvation, and ender pearl damage.
-- Keeps vanilla red as the fallback color for unmatched damage types.
-- Supports JSON configuration for colors and damage type overrides.
-- Supports custom damage types from mods and datapacks through `damageTypeOverrides`.
-
-## Configuration
-
-Mind Your Bruises creates this config file after the game starts:
-
-```text
-.minecraft/config/mind-your-bruises.json
-```
-
-In a development environment, the file is created under:
-
-```text
-run/config/mind-your-bruises.json
-```
-
-The config uses one JSON file directly under `config/`.
-
-If Mod Menu and YetAnotherConfigLib are installed, you can also open the in-game configuration screen from the Mod Menu entry. The in-game screen supports the main toggle, fixed color group color pickers, and advanced damage type overrides.
-
-Example config:
-
-```json
-{
-  "enabled": true,
-  "fireColor": "#ff7014",
-  "frostColor": "#4bd2ff",
-  "plantColor": "#50dc3c",
-  "fallbackColor": "#ff0000",
-  "arcaneColor": "#b950ff",
-  "shockColor": "#d8f6ff",
-  "starvationColor": "#9a7a32",
-  "enderColor": "#2bd6b3",
-  "damageTypeOverrides": {}
-}
-```
-
-Manual edits require a game restart.
-
-Configuration fields:
-
-- `enabled`: Turns the mod's recolored hurt overlay on or off. When set to `false`, the overlay falls back to vanilla red.
-- `fireColor`, `frostColor`, `plantColor`, `fallbackColor`, `arcaneColor`, `shockColor`, `starvationColor`, and `enderColor`: Hex RGB colors in `#rrggbb` format. Missing `#` is accepted and normalized on save.
-- `damageTypeOverrides`: Adds custom overrides on top of the built-in mappings. The left side is a damage type id and the right side is a color group. Valid color groups are `fire`, `frost`, `plant`, `fallback`, `arcane`, `shock`, `starvation`, and `ender`. Built-in mappings are not written to the config file; to override one, add it here explicitly.
-
-Default color groups:
-
-| Color group | Default color | Built-in damage types |
-| --- | --- | --- |
-| `fire` | `#ff7014` | Fire, lava, hot floor, fireballs, explosions, fireworks |
-| `frost` | `#4bd2ff` | Freezing and drowning damage |
-| `plant` | `#50dc3c` | Cactus and sweet berry bush damage |
-| `arcane` | `#b950ff` | Magic, indirect magic, dragon breath, sonic boom, thorns, wither, wither skull, out of world, outside border, generic kill |
-| `shock` | `#d8f6ff` | Lightning damage |
-| `starvation` | `#9a7a32` | Starvation damage |
-| `ender` | `#2bd6b3` | Ender pearl damage |
-| `fallback` | `#ff0000` | Unmatched damage types, vanilla physical damage, bee stings, suffocation, cramming |
-
-For example, this makes a custom thorny plant damage type use the plant overlay color, and forces vanilla drowning damage back to the fallback red overlay:
-
-```json
-"damageTypeOverrides": {
-  "examplemod:thorny_vine": "plant",
-  "minecraft:drown": "fallback"
-}
-```
-
-If a damage type is not listed in `damageTypeOverrides`, Mind Your Bruises falls back to its built-in broad matching rules, then finally to `fallbackColor`.
-
-## Requirements
-
-- Minecraft 1.21.11
-- Fabric Loader 0.19.3 or newer
-- Java 21 or newer
-
-Mod Menu and YetAnotherConfigLib are optional, but recommended if you want to edit the config in game. Without them, the mod still works and can be configured by editing `mind-your-bruises.json` manually and restarting the game.
+- Recolors the vanilla entity hurt overlay without changing damage mechanics.
+- Groups common damage types into readable color themes.
+- Keeps vanilla red as the fallback for unmatched or ordinary physical damage.
 
 ## Compatibility
 
-Mind Your Bruises is client-side only. It changes how hurt entities are rendered on your client and does not change damage rules, health, invulnerability frames, or server behavior.
+- Burn By Soul Fire: soul fire burning visuals are matched with a blue, frost-themed hurt flash when the mod is installed.
 
-## Building
+## Requirements
 
-```powershell
-.\gradlew.bat build
+- Fabric Loader
+- Java 21 or newer
+- A Minecraft version matching the downloaded file
+
+Optional:
+
+- Mod Menu
+- YetAnotherConfigLib
+
+## Configuration
+
+The generated config file is located in the Minecraft instance config directory:
+
+```text
+<instance folder>/config/mind-your-bruises.json
 ```
 
-The built jar will be generated under `build/libs/`.
+## License
+
+This project is licensed under CC0-1.0.
