@@ -1,10 +1,15 @@
+<div align="center">
+
 # Mind Your Bruises
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/mind-your-bruises?logo=modrinth&label=Modrinth&color=00AF5C)](https://modrinth.com/mod/mind-your-bruises)
-[![GitHub Release](https://img.shields.io/github/v/release/IsQuyet/mind-your-bruises?logo=github&label=GitHub%20Release&color=181717)](https://github.com/IsQuyet/mind-your-bruises/releases)
+[![Version](https://img.shields.io/github/v/release/IsQuyet/mind-your-bruises?label=Version&color=5865F2)](https://github.com/IsQuyet/mind-your-bruises/releases/latest)
+[![GitHub Releases](https://img.shields.io/badge/GitHub-Releases-181717?logo=github&logoColor=white)](https://github.com/IsQuyet/mind-your-bruises/releases)
 [![License](https://img.shields.io/github/license/IsQuyet/mind-your-bruises?label=License&color=blue)](LICENSE)
+
+</div>
 
 Mind Your Bruises is a client-side Fabric mod that recolors Minecraft's vanilla entity hurt flash based on the type of damage that caused it.
 
@@ -14,7 +19,7 @@ Mind Your Bruises is a client-side Fabric mod that recolors Minecraft's vanilla 
 - Groups common damage types into readable color themes.
 - Keeps vanilla red as the fallback for unmatched or ordinary physical damage.
 
-## Compatibility
+Compatibility:
 
 - Burn By Soul Fire: soul fire burning visuals are matched with a blue, frost-themed hurt flash when the mod is installed.
 
