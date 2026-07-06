@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import io.github.isquyet.mindyourbruises.client.render.DamageOverlayPalette;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -266,7 +266,7 @@ public class MindYourBruisesConfig {
 		};
 	}
 
-	public Integer overlayRowForDamageType(Identifier damageTypeId) {
+	public Integer overlayRowForDamageType(ResourceLocation damageTypeId) {
 		if (damageTypeId == null || damageTypeOverrides == null) {
 			return null;
 		}

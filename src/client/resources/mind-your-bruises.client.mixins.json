@@ -5,7 +5,6 @@
 	"client": [
 		"ClientPacketListenerMixin",
 		"LivingEntityRendererMixin",
-		"LivingEntityRenderStateMixin",
 		"OverlayTextureMixin"
 	],
 	"injectors": {

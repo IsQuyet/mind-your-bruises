@@ -3,8 +3,8 @@ package io.github.isquyet.mindyourbruises.client.render;
 import io.github.isquyet.mindyourbruises.client.compat.DamageTintCompatibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -27,7 +27,7 @@ public final class DamageTintRegistry {
 	}
 
 	public static void rememberDamage(int entityId, Holder<DamageType> damageTypeHolder) {
-		Identifier damageTypeId = resolveDamageTypeId(damageTypeHolder);
+		ResourceLocation damageTypeId = resolveDamageTypeId(damageTypeHolder);
 		int hurtOverlayRow = selectHurtOverlayRow(entityId, damageTypeId);
 
 		RECENT_DAMAGE_BY_ENTITY_ID.put(entityId, new DamageTintEntry(hurtOverlayRow, currentGameTime()));
@@ -52,17 +52,17 @@ public final class DamageTintRegistry {
 		return damageTintEntry.hurtOverlayRow();
 	}
 
-	private static Identifier resolveDamageTypeId(Holder<DamageType> damageTypeHolder) {
+	private static ResourceLocation resolveDamageTypeId(Holder<DamageType> damageTypeHolder) {
 		if (damageTypeHolder == null) {
 			return null;
 		}
 
 		return damageTypeHolder.unwrapKey()
-			.map(ResourceKey::identifier)
+			.map(ResourceKey::location)
 			.orElse(null);
 	}
 
-	private static int selectHurtOverlayRow(int entityId, Identifier damageTypeId) {
+	private static int selectHurtOverlayRow(int entityId, ResourceLocation damageTypeId) {
 		if (!HAS_ACTIVE_COMPATIBILITY) {
 			return DamageOverlayPalette.selectOverlayRow(damageTypeId);
 		}

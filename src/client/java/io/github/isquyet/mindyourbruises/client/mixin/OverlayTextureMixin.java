@@ -45,12 +45,22 @@ public class OverlayTextureMixin {
 		}
 
 		for (int hurtOverlayRow : CUSTOM_HURT_OVERLAY_ROWS) {
-			int rowColor = DamageOverlayPalette.colorForOverlayRow(hurtOverlayRow);
+			int rowColor = convertArgbToNativeRgba(DamageOverlayPalette.colorForOverlayRow(hurtOverlayRow));
 			for (int overlayColumn = 0; overlayColumn < OVERLAY_TEXTURE_SIZE; overlayColumn++) {
-				pixels.setPixel(overlayColumn, hurtOverlayRow, rowColor);
+				pixels.setPixelRGBA(overlayColumn, hurtOverlayRow, rowColor);
 			}
 		}
 
 		this.texture.upload();
+	}
+
+	private static int convertArgbToNativeRgba(int argbColor) {
+		int alpha = argbColor >>> 24;
+		int red = (argbColor >>> 16) & 0xFF;
+		int green = (argbColor >>> 8) & 0xFF;
+		int blue = argbColor & 0xFF;
+
+		// NativeImage#setPixelRGBA stores RGBA bytes, while our config colors are Java-style ARGB ints.
+		return (alpha << 24) | (blue << 16) | (green << 8) | red;
 	}
 }

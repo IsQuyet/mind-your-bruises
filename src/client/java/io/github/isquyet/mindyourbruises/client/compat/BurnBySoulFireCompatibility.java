@@ -4,7 +4,7 @@ import io.github.isquyet.mindyourbruises.client.MindYourBruisesClient;
 import io.github.isquyet.mindyourbruises.client.render.DamageOverlayPalette;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 
@@ -26,7 +26,7 @@ public final class BurnBySoulFireCompatibility {
 		return LOADED;
 	}
 
-	public static Integer overlayRowForDamage(int entityId, Identifier damageTypeId) {
+	public static Integer overlayRowForDamage(int entityId, ResourceLocation damageTypeId) {
 		if (!LOADED || !isVanillaFireDamage(damageTypeId)) {
 			return null;
 		}
@@ -43,7 +43,7 @@ public final class BurnBySoulFireCompatibility {
 		return null;
 	}
 
-	private static boolean isVanillaFireDamage(Identifier damageTypeId) {
+	private static boolean isVanillaFireDamage(ResourceLocation damageTypeId) {
 		if (damageTypeId == null) {
 			return false;
 		}
@@ -61,7 +61,7 @@ public final class BurnBySoulFireCompatibility {
 		return minecraft.level.getEntity(entityId);
 	}
 
-	private static boolean isEntityBurningBySoulFire(Entity entity, Identifier damageTypeId) {
+	private static boolean isEntityBurningBySoulFire(Entity entity, ResourceLocation damageTypeId) {
 		Boolean reflectedSoulFireState = reflectedSoulFireState(entity);
 		if (reflectedSoulFireState != null && reflectedSoulFireState) {
 			return true;
@@ -83,7 +83,7 @@ public final class BurnBySoulFireCompatibility {
 		}
 	}
 
-	private static boolean isVanillaInFireDamage(Identifier damageTypeId) {
+	private static boolean isVanillaInFireDamage(ResourceLocation damageTypeId) {
 		return damageTypeId != null && "minecraft:in_fire".equals(damageTypeId.toString());
 	}
 

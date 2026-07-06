@@ -1,7 +1,7 @@
 package io.github.isquyet.mindyourbruises.client.render;
 
 import io.github.isquyet.mindyourbruises.client.MindYourBruisesConfig;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Locale;
 
@@ -24,11 +24,11 @@ public final class DamageOverlayPalette {
 		return MindYourBruisesConfig.get().colorForOverlayRow(overlayRow);
 	}
 
-	public static int selectOverlayRow(Identifier damageTypeId) {
+	public static int selectOverlayRow(ResourceLocation damageTypeId) {
 		return selectOverlayRow(damageTypeId, null);
 	}
 
-	public static int selectOverlayRow(Identifier damageTypeId, Integer compatibleOverlayRow) {
+	public static int selectOverlayRow(ResourceLocation damageTypeId, Integer compatibleOverlayRow) {
 		MindYourBruisesConfig config = MindYourBruisesConfig.get();
 		if (!config.enabled()) {
 			return VANILLA_HURT_ROW;
