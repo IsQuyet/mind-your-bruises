@@ -13,6 +13,7 @@
 		"issues": "https://github.com/IsQuyet/mind-your-bruises/issues"
 	},
 	"license": "CC0-1.0",
+	"icon": "assets/mind-your-bruises/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
