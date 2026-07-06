@@ -5,7 +5,6 @@
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/mind-your-bruises?logo=modrinth&label=Modrinth&color=00AF5C)](https://modrinth.com/mod/mind-your-bruises)
-[![Version](https://img.shields.io/github/v/release/IsQuyet/mind-your-bruises?label=Version&color=5865F2)](https://github.com/IsQuyet/mind-your-bruises/releases/latest)
 [![GitHub Releases](https://img.shields.io/badge/GitHub-Releases-181717?logo=github&logoColor=white)](https://github.com/IsQuyet/mind-your-bruises/releases)
 [![License](https://img.shields.io/github/license/IsQuyet/mind-your-bruises?label=License&color=blue)](LICENSE)
 
