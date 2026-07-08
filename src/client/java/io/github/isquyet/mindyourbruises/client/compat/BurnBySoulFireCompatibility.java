@@ -15,6 +15,8 @@ public final class BurnBySoulFireCompatibility {
 	private static final String MOD_ID = "burnbysoulfire";
 	private static final String ENTITY_INTERFACE_CLASS_NAME = "aquariusplayz.burnbysoulfire.IEntity";
 	private static final String IS_BURNING_BY_SOUL_FIRE_METHOD_NAME = "isBurningBySoulFire";
+	private static final String IN_FIRE_DAMAGE_TYPE_ID = "minecraft:in_fire";
+	private static final String ON_FIRE_DAMAGE_TYPE_ID = "minecraft:on_fire";
 	private static final boolean LOADED = FabricLoader.getInstance().isModLoaded(MOD_ID);
 	private static final SoulFireStateAccessor SOUL_FIRE_STATE_ACCESSOR = SoulFireStateAccessor.create();
 	private static boolean reflectionFailureLogged = false;
@@ -44,12 +46,7 @@ public final class BurnBySoulFireCompatibility {
 	}
 
 	private static boolean isVanillaFireDamage(ResourceLocation damageTypeId) {
-		if (damageTypeId == null) {
-			return false;
-		}
-
-		String damageTypeName = damageTypeId.toString();
-		return "minecraft:in_fire".equals(damageTypeName) || "minecraft:on_fire".equals(damageTypeName);
+		return isVanillaInFireDamage(damageTypeId) || isVanillaOnFireDamage(damageTypeId);
 	}
 
 	private static Entity resolveEntity(int entityId) {
@@ -84,7 +81,11 @@ public final class BurnBySoulFireCompatibility {
 	}
 
 	private static boolean isVanillaInFireDamage(ResourceLocation damageTypeId) {
-		return damageTypeId != null && "minecraft:in_fire".equals(damageTypeId.toString());
+		return damageTypeId != null && IN_FIRE_DAMAGE_TYPE_ID.equals(damageTypeId.toString());
+	}
+
+	private static boolean isVanillaOnFireDamage(ResourceLocation damageTypeId) {
+		return damageTypeId != null && ON_FIRE_DAMAGE_TYPE_ID.equals(damageTypeId.toString());
 	}
 
 	private static boolean isEntityTouchingSoulFire(Entity entity) {
