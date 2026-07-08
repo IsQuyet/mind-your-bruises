@@ -14,7 +14,8 @@ import java.util.Map;
 public final class DamageTintRegistry {
 	private static final boolean HAS_ACTIVE_COMPATIBILITY = DamageTintCompatibility.hasActiveCompatibility();
 	private static final int MAX_TRACKED_ENTITIES = 512;
-	private static final long DAMAGE_TINT_TTL_TICKS = 40L;
+	private static final long TICKS_PER_SECOND = 20L;
+	private static final long DAMAGE_TINT_TTL_TICKS = 2L * TICKS_PER_SECOND;
 
 	private static final Map<Integer, DamageTintEntry> RECENT_DAMAGE_BY_ENTITY_ID = new LinkedHashMap<>() {
 		@Override

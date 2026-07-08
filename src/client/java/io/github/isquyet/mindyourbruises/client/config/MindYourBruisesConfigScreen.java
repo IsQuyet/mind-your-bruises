@@ -19,6 +19,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public final class MindYourBruisesConfigScreen {
+	private static final int RGB_COLOR_VALUE_START_INDEX = 1;
+	private static final int RGB_COLOR_RADIX = 16;
+
 	private MindYourBruisesConfigScreen() {
 	}
 
@@ -140,7 +143,7 @@ public final class MindYourBruisesConfigScreen {
 	}
 
 	private static Color parseColor(String hexColor) {
-		return new Color(Integer.parseInt(hexColor.substring(1), 16));
+		return new Color(Integer.parseInt(hexColor.substring(RGB_COLOR_VALUE_START_INDEX), RGB_COLOR_RADIX));
 	}
 
 	private static String formatColor(Color color) {
