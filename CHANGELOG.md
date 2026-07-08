@@ -6,17 +6,11 @@ Everything above the line is ignored. Everything below the line is used as the r
 
 ----------
 
-Mind Your Bruises [ModVersion]() for Minecraft [MCVersion]() adds client-side damage-colored entity hurt overlays.
+## Features
 
-## Highlights
+- Improved damage-colored hurt overlays for newer entity rendering.
+- Improved built-in damage type matching for more consistent color group selection.
 
-- Colors the vanilla entity hurt flash based on damage type.
-- Supports fire, frost, plant, arcane, shock, starvation, ender, and fallback color groups.
-- Adds optional in-game configuration through Mod Menu and YetAnotherConfigLib.
-- Keeps working without optional config-screen dependencies by falling back to manual JSON configuration.
+## Fixes
 
-## Compatibility
-
-- Minecraft [MCVersion]()
-- Fabric Loader 0.19.3 or newer
-- Client-side only
+- Fixed empty custom color values falling back safely to their defaults.
