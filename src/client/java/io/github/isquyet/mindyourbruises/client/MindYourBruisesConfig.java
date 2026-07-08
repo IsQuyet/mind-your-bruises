@@ -21,8 +21,13 @@ import java.util.Map;
 public class MindYourBruisesConfig {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("mind-your-bruises.json");
-	private static final long MAX_CONFIG_SIZE_BYTES = 16384L;
+	private static final long MAX_CONFIG_SIZE_BYTES = 16L * 1024L;
 	private static final boolean DEFAULT_ENABLED = true;
+	private static final int DAMAGE_TYPE_OVERRIDE_PART_LIMIT = 2;
+	private static final int RGB_COLOR_LENGTH = 7;
+	private static final int RGB_COLOR_VALUE_START_INDEX = 1;
+	private static final int RGB_COLOR_RADIX = 16;
+	private static final char RGB_COLOR_PREFIX = '#';
 
 	private static final String DEFAULT_FIRE_COLOR = "#ff7014";
 	private static final String DEFAULT_FROST_COLOR = "#4bd2ff";
@@ -32,7 +37,16 @@ public class MindYourBruisesConfig {
 	private static final String DEFAULT_SHOCK_COLOR = "#d8f6ff";
 	private static final String DEFAULT_STARVATION_COLOR = "#9a7a32";
 	private static final String DEFAULT_ENDER_COLOR = "#2bd6b3";
-	private static final String VALID_COLOR_GROUP_NAMES = "fire, frost, plant, fallback, arcane, shock, starvation, ender";
+	private static final String VALID_COLOR_GROUP_NAMES = String.join(", ",
+		DamageOverlayPalette.FIRE_GROUP_NAME,
+		DamageOverlayPalette.FROST_GROUP_NAME,
+		DamageOverlayPalette.PLANT_GROUP_NAME,
+		DamageOverlayPalette.FALLBACK_GROUP_NAME,
+		DamageOverlayPalette.ARCANE_GROUP_NAME,
+		DamageOverlayPalette.SHOCK_GROUP_NAME,
+		DamageOverlayPalette.STARVATION_GROUP_NAME,
+		DamageOverlayPalette.ENDER_GROUP_NAME
+	);
 
 	private static MindYourBruisesConfig instance = new MindYourBruisesConfig();
 
@@ -276,7 +290,7 @@ public class MindYourBruisesConfig {
 			return null;
 		}
 
-		return overlayRowForName(overrideName);
+		return DamageOverlayPalette.overlayRowForName(overrideName);
 	}
 
 	private boolean normalizeDefaults() {
@@ -333,8 +347,12 @@ public class MindYourBruisesConfig {
 		}
 
 		String normalizedColor = color.trim().toLowerCase(Locale.ROOT);
-		if (!normalizedColor.startsWith("#")) {
-			normalizedColor = "#" + normalizedColor;
+		if (normalizedColor.isEmpty()) {
+			return new ColorNormalization(defaultColor, true);
+		}
+
+		if (normalizedColor.charAt(0) != RGB_COLOR_PREFIX) {
+			normalizedColor = RGB_COLOR_PREFIX + normalizedColor;
 		}
 
 		if (!isValidRgbColor(normalizedColor)) {
@@ -350,7 +368,7 @@ public class MindYourBruisesConfig {
 			return normalizedOverrides;
 		}
 
-		Map<String, String> builtInOverrides = builtInDamageTypeOverrides();
+		Map<String, String> builtInOverrides = DamageOverlayPalette.builtInDamageTypeOverrides();
 		for (Map.Entry<String, String> override : overrides.entrySet()) {
 			if (override.getKey() == null || override.getValue() == null) {
 				continue;
@@ -358,7 +376,7 @@ public class MindYourBruisesConfig {
 
 			String damageTypeId = override.getKey().trim().toLowerCase(Locale.ROOT);
 			String overlayRowName = override.getValue().trim().toLowerCase(Locale.ROOT);
-			if (damageTypeId.isEmpty() || overlayRowForName(overlayRowName) == null) {
+			if (damageTypeId.isEmpty() || DamageOverlayPalette.overlayRowForName(overlayRowName) == null) {
 				continue;
 			}
 
@@ -393,14 +411,14 @@ public class MindYourBruisesConfig {
 				continue;
 			}
 
-			String[] overrideParts = damageTypeOverrideLine.split("=", 2);
+			String[] overrideParts = damageTypeOverrideLine.split("=", DAMAGE_TYPE_OVERRIDE_PART_LIMIT);
 			if (overrideParts.length != 2) {
 				continue;
 			}
 
 			String damageTypeId = overrideParts[0].trim().toLowerCase(Locale.ROOT);
 			String overlayRowName = overrideParts[1].trim().toLowerCase(Locale.ROOT);
-			if (damageTypeId.isEmpty() || overlayRowForName(overlayRowName) == null) {
+			if (damageTypeId.isEmpty() || DamageOverlayPalette.overlayRowForName(overlayRowName) == null) {
 				continue;
 			}
 
@@ -410,36 +428,18 @@ public class MindYourBruisesConfig {
 		return normalizeDamageTypeOverrides(parsedOverrides);
 	}
 
-	private static Integer overlayRowForName(String overlayRowName) {
-		if (overlayRowName == null) {
-			return null;
-		}
-
-		return switch (overlayRowName.trim().toLowerCase(Locale.ROOT)) {
-			case "fire" -> DamageOverlayPalette.FIRE_HURT_ROW;
-			case "frost" -> DamageOverlayPalette.FROST_HURT_ROW;
-			case "plant" -> DamageOverlayPalette.PLANT_HURT_ROW;
-			case "fallback", "default", "vanilla" -> DamageOverlayPalette.VANILLA_HURT_ROW;
-			case "arcane" -> DamageOverlayPalette.ARCANE_HURT_ROW;
-			case "shock" -> DamageOverlayPalette.SHOCK_HURT_ROW;
-			case "starvation" -> DamageOverlayPalette.STARVATION_HURT_ROW;
-			case "ender" -> DamageOverlayPalette.ENDER_HURT_ROW;
-			default -> null;
-		};
-	}
-
 	private static int parseRgbColor(String color, String defaultColor) {
 		String normalizedColor = normalizeColor(color, defaultColor).color();
-		int redGreenBlue = Integer.parseInt(normalizedColor.substring(1), 16);
+		int redGreenBlue = Integer.parseInt(normalizedColor.substring(RGB_COLOR_VALUE_START_INDEX), RGB_COLOR_RADIX);
 		return (DamageOverlayPalette.VANILLA_HURT_OVERLAY_ALPHA << 24) | redGreenBlue;
 	}
 
 	private static boolean isValidRgbColor(String color) {
-		if (color.length() != 7 || color.charAt(0) != '#') {
+		if (color.length() != RGB_COLOR_LENGTH || color.charAt(0) != RGB_COLOR_PREFIX) {
 			return false;
 		}
 
-		for (int characterIndex = 1; characterIndex < color.length(); characterIndex++) {
+		for (int characterIndex = RGB_COLOR_VALUE_START_INDEX; characterIndex < color.length(); characterIndex++) {
 			char character = color.charAt(characterIndex);
 			boolean decimalDigit = character >= '0' && character <= '9';
 			boolean lowercaseHexDigit = character >= 'a' && character <= 'f';
@@ -449,35 +449,6 @@ public class MindYourBruisesConfig {
 		}
 
 		return true;
-	}
-
-	private static Map<String, String> builtInDamageTypeOverrides() {
-		Map<String, String> overrides = new LinkedHashMap<>();
-		overrides.put("minecraft:in_fire", "fire");
-		overrides.put("minecraft:on_fire", "fire");
-		overrides.put("minecraft:lava", "fire");
-		overrides.put("minecraft:hot_floor", "fire");
-		overrides.put("minecraft:freeze", "frost");
-		overrides.put("minecraft:cactus", "plant");
-		overrides.put("minecraft:sweet_berry_bush", "plant");
-		overrides.put("minecraft:magic", "arcane");
-		overrides.put("minecraft:indirect_magic", "arcane");
-		overrides.put("minecraft:wither", "arcane");
-		overrides.put("minecraft:wither_skull", "arcane");
-		overrides.put("minecraft:lightning_bolt", "shock");
-		overrides.put("minecraft:starve", "starvation");
-		overrides.put("minecraft:ender_pearl", "ender");
-		overrides.put("minecraft:dragon_breath", "arcane");
-		overrides.put("minecraft:sonic_boom", "arcane");
-		overrides.put("minecraft:thorns", "arcane");
-		overrides.put("minecraft:explosion", "fire");
-		overrides.put("minecraft:player_explosion", "fire");
-		overrides.put("minecraft:fireworks", "fire");
-		overrides.put("minecraft:drown", "frost");
-		overrides.put("minecraft:out_of_world", "arcane");
-		overrides.put("minecraft:outside_border", "arcane");
-		overrides.put("minecraft:generic_kill", "arcane");
-		return overrides;
 	}
 
 	private record ColorNormalization(String color, boolean changed) {
